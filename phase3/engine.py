@@ -45,12 +45,13 @@ def run_recommendation_engine(
         user_prompt = build_user_prompt(prefs, shortlisted)
         
         # 3. Call Groq
+        model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
                 {"role": "user", "content": user_prompt}
             ],
-            model="llama-3.3-70b-versatile",
+            model=model,
             response_format={"type": "json_object"}
         )
         

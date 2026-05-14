@@ -1,32 +1,31 @@
 # Deployment Plan: Zomato AI Recommendation System
 
-This plan details the steps to deploy the application with the **Backend on Render** and the **Frontend on Vercel**.
+This plan details the steps to deploy the application with the **Backend on Railway** and the **Frontend on Vercel**.
 
-## 1. Backend Deployment (Render)
+## 1. Backend Deployment (Railway)
 
-Render is ideal for hosting the FastAPI backend.
+Railway is excellent for hosting FastAPI backends with minimal configuration.
 
 ### Prerequisites
-- A [Render](https://render.com/) account connected to your GitHub/GitLab repository.
+- A [Railway](https://railway.app/) account.
 - Ensure `requirements.txt` exists in the root (created).
+- The `Procfile` exists in the root (created).
 - The `data/catalog.jsonl` file must be included in your repository.
 
 ### Steps
-1. **Create a New Web Service:**
-   - In the Render dashboard, click **New** > **Web Service**.
+1. **Create a New Project:**
+   - In the Railway dashboard, click **New Project** > **Deploy from GitHub repo**.
    - Select your repository.
 2. **Configure Service Settings:**
-   - **Name:** `zomato-ai-backend` (or your preferred name)
-   - **Language:** `Python 3`
-   - **Branch:** `main` (or your default branch)
-   - **Build Command:** `pip install -r requirements.txt`
-   - **Start Command:** `uvicorn phase4.app:app --host 0.0.0.0 --port $PORT`
+   - Railway will automatically detect the `Procfile` and use it for the start command.
+   - **Start Command (from Procfile):** `uvicorn phase4.app:app --host 0.0.0.0 --port ${PORT:-8001}`
 3. **Set Environment Variables:**
-   - Go to the **Environment** tab.
+   - Go to the **Variables** tab in your Railway service.
    - Add `GROQ_API_KEY`: Paste your Groq API key here.
+   - Add `GROQ_MODEL`: (Optional) `llama-3.3-70b-versatile`.
 4. **Deploy:**
-   - Render will build and deploy your service.
-   - **Copy the service URL** (e.g., `https://zomato-ai-backend.onrender.com`). You will need this for the frontend.
+   - Railway will build and deploy your service automatically.
+   - **Copy the service URL** (e.g., `https://zomato-ai-backend-production.up.railway.app`). You will need this for the frontend.
 
 ---
 
@@ -36,7 +35,7 @@ Vercel is optimized for React/Vite applications.
 
 ### Prerequisites
 - A [Vercel](https://vercel.com/) account.
-- The Render backend URL from the previous step.
+- The Railway backend URL from the previous step.
 
 ### Steps
 1. **Import Project:**
@@ -48,7 +47,7 @@ Vercel is optimized for React/Vite applications.
    - **Build Command:** `npm run build`
    - **Output Directory:** `dist`
 3. **Set Environment Variables:**
-   - Add `VITE_API_URL`: Paste your Render backend URL (e.g., `https://zomato-ai-backend.onrender.com`).
+   - Add `VITE_API_URL`: Paste your Railway backend URL (e.g., `https://zomato-ai-backend.up.railway.app`).
 4. **Deploy:**
    - Click **Deploy**. Vercel will build the frontend.
 5. **Verify:**
@@ -67,21 +66,18 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 ```
 
 ### CORS Configuration in Backend
-The backend in `phase4/app.py` is currently configured to allow all origins (`allow_origins=["*"]`). While this works for testing, for better security in production, you should eventually restrict it to your Vercel URL.
+The backend in `phase4/app.py` is configured to allow origins via the `ALLOWED_ORIGINS` environment variable.
 
 ```python
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["https://your-frontend-url.vercel.app", "http://localhost:5173"],
-    # ...
-)
+# Set this variable in Railway dashboard
+ALLOWED_ORIGINS=https://your-frontend-url.vercel.app,http://localhost:5173
 ```
 
 ---
 
 ## Deployment Checklist
-- [ ] Backend deployed to Render?
-- [ ] `GROQ_API_KEY` set in Render?
+- [ ] Backend deployed to Railway?
+- [ ] `GROQ_API_KEY` set in Railway?
 - [ ] Frontend deployed to Vercel?
-- [ ] `VITE_API_URL` set in Vercel pointing to Render?
+- [ ] `VITE_API_URL` set in Vercel pointing to Railway?
 - [ ] Test the live Vercel URL for recommendations.
