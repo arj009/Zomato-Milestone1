@@ -11,7 +11,8 @@ function App() {
     location: '',
     budget: '',
     cuisine: '',
-    min_rating: 4.0
+    min_rating: 4.0,
+    extra: ''
   });
 
   const [cuisinesList, setCuisinesList] = useState([]);
@@ -78,7 +79,8 @@ function App() {
         body: JSON.stringify({
           ...formData,
           budget: formData.budget ? budgetToken : "high",
-          min_rating: parseFloat(formData.min_rating)
+          min_rating: parseFloat(formData.min_rating),
+          extra: formData.extra
         })
       });
 
@@ -160,6 +162,18 @@ function App() {
               <option value="4.5">4.5 &amp; Above</option>
             </select>
           </div>
+        </div>
+
+        <div className="input-group full-width">
+          <label htmlFor="extra">Describe your perfect meal (vibe, mood, or specific cravings)</label>
+          <textarea 
+            id="extra"
+            name="extra"
+            value={formData.extra}
+            onChange={handleChange}
+            placeholder="e.g. A quiet rooftop for a date, or a place with live music and great momos..."
+            rows="3"
+          />
         </div>
 
         <button type="submit" className="primary-btn" disabled={loading}>
