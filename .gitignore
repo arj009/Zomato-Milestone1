@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
+ENV/
+
+# Secrets
+.env
+.env.*
+phase3/.env
+
+# Node
+node_modules/
+dist/
+.vercel/
+
+# Data (optional, but catalog.jsonl should be kept as per deployment plan)
+# data/catalog.jsonl
