@@ -10,6 +10,7 @@ ENV/
 # Secrets
 .env
 .env.*
+!.env.example
 phase3/.env
 
 # Node
