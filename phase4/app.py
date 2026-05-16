@@ -96,7 +96,10 @@ async def recommend(req: RecommendRequest):
         
         # 2. Filtering Logic (Phase 2)
         candidates = filter_catalog(app.state.catalog, prefs)
+        print(f">>> [API] Found {len(candidates)} candidates after filtering.")
+        
         if not candidates:
+             print(">>> [API] No candidates found. Returning early.")
              return EngineResponse(
                 summary="No restaurants matched your specific criteria. Try broadening your search!",
                 recommendations=[],
@@ -105,9 +108,11 @@ async def recommend(req: RecommendRequest):
 
         # 3. Shortlisting (Top 10 for the LLM)
         shortlist = shortlist_candidates(candidates, max_n=10)
+        print(f">>> [API] Shortlisted {len(shortlist)} candidates for LLM.")
         
         # 4. LLM Orchestration (Phase 3)
         result = run_recommendation_engine(prefs, shortlist)
+        print(f">>> [API] Recommendation source: {result.source}")
         
         # 5. Format Response
         recs = [

@@ -100,10 +100,12 @@ function App() {
 
   return (
     <div className="app-container">
-      <header>
-        <h1>Zomato AI Guide</h1>
-        <p>Discover your next great meal with intelligent recommendations</p>
-      </header>
+      <div className="hero">
+        <header>
+          <h1>Zomato AI Guide</h1>
+          <p>Discover your next great meal with intelligent recommendations</p>
+        </header>
+      </div>
 
       <form className="search-container" onSubmit={handleSubmit}>
         <div className="form-grid">

@@ -34,9 +34,11 @@ def run_recommendation_engine(
     key = api_key or os.getenv("GROQ_API_KEY")
     
     if not key:
+        print(">>> [ENGINE] ERROR: GROQ_API_KEY NOT FOUND! Falling back to deterministic rankings.")
         logger.warning("GROQ_API_KEY not found. Falling back to deterministic rankings.")
         return _deterministic_fallback(shortlisted, "API key missing. Using database rankings.")
 
+    print(f">>> [ENGINE] Calling GROQ API with {len(shortlisted)} candidates...")
     try:
         # 1. Initialize Groq Client
         client = Groq(api_key=key)
@@ -46,6 +48,7 @@ def run_recommendation_engine(
         
         # 3. Call Groq
         model = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
+        print(f">>> [ENGINE] Using model: {model}")
         chat_completion = client.chat.completions.create(
             messages=[
                 {"role": "system", "content": SYSTEM_PROMPT},
@@ -54,6 +57,7 @@ def run_recommendation_engine(
             model=model,
             response_format={"type": "json_object"}
         )
+        print(">>> [ENGINE] GROQ API call successful!")
         
         # 4. Parse Response
         response_text = chat_completion.choices[0].message.content
@@ -88,7 +92,8 @@ def run_recommendation_engine(
         return EngineResult(summary=summary, recommendations=recommendations, source="groq")
 
     except Exception as e:
-        logger.error(f"Groq Engine failed: {e}")
+        print(f">>> [ENGINE] !!! GROQ API ERROR !!!: {str(e)}")
+        logger.error(f"!!! GROQ API ERROR !!!: {str(e)}")
         return _deterministic_fallback(shortlisted, f"Groq error: {str(e)}")
 
 def _deterministic_fallback(shortlisted: list[RestaurantRecord], error_note: str) -> EngineResult:
