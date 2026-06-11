@@ -6,47 +6,28 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
 function App() {
   const [locations, setLocations] = useState([]);
   const [loadingLocations, setLoadingLocations] = useState(true);
-  
-  const [formData, setFormData] = useState({
-    location: '',
-    budget: '',
-    cuisine: '',
-    min_rating: 4.0,
-    extra: ''
-  });
-
+  const [formData, setFormData] = useState({ location: '', budget: '', cuisine: '', min_rating: 4.0, extra: '' });
   const [cuisinesList, setCuisinesList] = useState([]);
-
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState(null);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Fetch locations for autocomplete
-    const fetchLocations = async () => {
+    const fetchMeta = async () => {
       try {
-        const res = await fetch(`${API_URL}/meta/locations`);
-        if (!res.ok) throw new Error('Failed to load locations');
-        const data = await res.json();
-        setLocations(data);
+        const [locRes, cuiRes] = await Promise.all([
+          fetch(`${API_URL}/meta/locations`),
+          fetch(`${API_URL}/meta/cuisines`)
+        ]);
+        if (locRes.ok) setLocations(await locRes.json());
+        if (cuiRes.ok) setCuisinesList(await cuiRes.json());
       } catch (err) {
         console.error(err);
       } finally {
         setLoadingLocations(false);
       }
     };
-    const fetchCuisines = async () => {
-      try {
-        const res = await fetch(`${API_URL}/meta/cuisines`);
-        if (!res.ok) throw new Error('Failed to load cuisines');
-        const data = await res.json();
-        setCuisinesList(data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    fetchLocations();
-    fetchCuisines();
+    fetchMeta();
   }, []);
 
   const handleChange = (e) => {
@@ -56,10 +37,7 @@ function App() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.location) {
-      setError('Location is required');
-      return;
-    }
+    if (!formData.location) return setError('Location is required');
     
     setLoading(true);
     setError(null);
@@ -79,18 +57,12 @@ function App() {
         body: JSON.stringify({
           ...formData,
           budget: formData.budget ? budgetToken : "high",
-          min_rating: parseFloat(formData.min_rating),
-          extra: formData.extra
+          min_rating: parseFloat(formData.min_rating)
         })
       });
 
-      if (!res.ok) {
-        const errData = await res.json();
-        throw new Error(errData.detail || 'Failed to fetch recommendations');
-      }
-
-      const data = await res.json();
-      setResults(data);
+      if (!res.ok) throw new Error((await res.json()).detail || 'Failed to fetch');
+      setResults(await res.json());
     } catch (err) {
       setError(err.message);
     } finally {
@@ -100,111 +72,72 @@ function App() {
 
   return (
     <div className="app-container">
+      {/* Background ambient glows */}
+      <div className="ambient-glow glow-red"></div>
+      <div className="ambient-glow glow-yellow"></div>
+
       <div className="hero">
-        <header>
+        <div className="hero-content">
           <h1>Zomato AI Guide</h1>
-          <p>Discover your next great meal with intelligent recommendations</p>
-        </header>
+          <p>Discover your next great meal with intelligent, vibe-based recommendations.</p>
+        </div>
       </div>
 
-      <form className="search-container" onSubmit={handleSubmit}>
+      <form className="glass-panel search-container" onSubmit={handleSubmit}>
         <div className="form-grid">
           <div className="input-group">
-            <label htmlFor="location">Where are you looking?</label>
-            <select 
-              id="location"
-              name="location"
-              value={formData.location}
-              onChange={handleChange}
-              required
-            >
-              <option value="" disabled>Select a location...</option>
+            <label>Location <span className="required">*</span></label>
+            <select name="location" value={formData.location} onChange={handleChange} required>
+              <option value="" disabled>Select a neighborhood...</option>
               {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
             </select>
           </div>
 
           <div className="input-group">
-            <label htmlFor="cuisine">Craving anything specific?</label>
-            <select 
-              id="cuisine"
-              name="cuisine"
-              value={formData.cuisine}
-              onChange={handleChange}
-            >
+            <label>Cuisine</label>
+            <select name="cuisine" value={formData.cuisine} onChange={handleChange}>
               <option value="">Any Cuisine</option>
               {cuisinesList.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
 
           <div className="input-group">
-            <label htmlFor="budget">Max Budget (for two)</label>
-            <input 
-              type="number" 
-              id="budget"
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              placeholder="e.g. 1500"
-              min="0"
-              step="100"
-            />
+            <label>Max Budget (for two)</label>
+            <input type="number" name="budget" value={formData.budget} onChange={handleChange} placeholder="₹1500" min="0" step="100" />
           </div>
 
           <div className="input-group">
-            <label htmlFor="min_rating">Minimum Rating</label>
-            <select 
-              id="min_rating"
-              name="min_rating"
-              value={formData.min_rating}
-              onChange={handleChange}
-            >
-              <option value="0">Any Rating</option>
-              <option value="3.5">3.5 &amp; Above</option>
-              <option value="4.0">4.0 &amp; Above</option>
-              <option value="4.5">4.5 &amp; Above</option>
+            <label>Minimum Rating</label>
+            <select name="min_rating" value={formData.min_rating} onChange={handleChange}>
+              <option value="0">Any</option>
+              <option value="3.5">3.5 & Up</option>
+              <option value="4.0">4.0 & Up</option>
+              <option value="4.5">4.5 & Up</option>
             </select>
           </div>
         </div>
 
         <div className="input-group full-width">
-          <label htmlFor="extra">Describe your perfect meal (vibe, mood, or specific cravings)</label>
-          <textarea 
-            id="extra"
-            name="extra"
-            value={formData.extra}
-            onChange={handleChange}
-            placeholder="e.g. A quiet rooftop for a date, or a place with live music and great momos..."
-            rows="3"
-          />
+          <label>The Vibe</label>
+          <textarea name="extra" value={formData.extra} onChange={handleChange} placeholder="e.g. A quiet rooftop for a date, or live music and great momos..." rows="2" />
         </div>
 
-        <button type="submit" className="primary-btn" disabled={loading}>
-          {loading ? (
-            <>
-              <div className="spinner"></div> Searching...
-            </>
-          ) : 'Find Restaurants'}
+        <button type="submit" className="glow-btn" disabled={loading}>
+          {loading ? <span className="spinner"></span> : 'Find Restaurants'}
         </button>
       </form>
 
-      {error && (
-        <div className="error-message">
-          <strong>Error:</strong> {error}
-        </div>
-      )}
+      {error && <div className="glass-panel error-message">{error}</div>}
 
       {loading && (
         <div className="results-container">
-          <h2 className="results-header">Consulting our AI Food Expert...</h2>
           <div className="cards-grid">
             {[1, 2, 3].map(i => (
-              <div key={i} className="skeleton-card">
-                <div className="skeleton skeleton-title"></div>
-                <div className="skeleton skeleton-meta"></div>
-                <br/>
-                <div className="skeleton skeleton-text"></div>
-                <div className="skeleton skeleton-text"></div>
-                <div className="skeleton skeleton-text"></div>
+              <div key={i} className="glass-panel skeleton-card">
+                <div className="shimmer skeleton-title"></div>
+                <div className="shimmer skeleton-meta"></div>
+                <div className="shimmer skeleton-text"></div>
+                <div className="shimmer skeleton-text"></div>
               </div>
             ))}
           </div>
@@ -212,41 +145,27 @@ function App() {
       )}
 
       {results && !loading && (
-        <div className="results-container">
-          <h2 className="results-header">Your Recommendations</h2>
-          {results.summary && (
-            <div className="results-summary">{results.summary}</div>
-          )}
-
-          {results.recommendations.length === 0 ? (
-            <div className="empty-state">
-              <h3>No Perfect Matches Found</h3>
-              <p>Try adjusting your filters, like broadening the location or lowering the minimum rating.</p>
-            </div>
-          ) : (
-            <div className="cards-grid">
-              {results.recommendations.map((rec, idx) => (
-                <div 
-                  key={rec.restaurant.id} 
-                  className="result-card" 
-                  style={{ animationDelay: `${idx * 0.15}s` }}
-                >
-                  <div className="card-header">
-                    <div className="rank-badge">#{rec.rank}</div>
-                    <h3 className="card-title">{rec.restaurant.name}</h3>
-                    <div className="card-meta">
-                      <span className="rating">★ {rec.restaurant.rating}</span>
-                      <span>₹{rec.restaurant.cost_for_two} for two</span>
-                    </div>
-                    <div className="card-cuisines">{rec.restaurant.cuisines}</div>
+        <div className="results-container slide-up">
+          {results.summary && <div className="glass-panel results-summary">{results.summary}</div>}
+          
+          <div className="cards-grid">
+            {results.recommendations.map((rec, idx) => (
+              <div key={rec.restaurant.id} className="glass-panel result-card" style={{ animationDelay: `${idx * 0.1}s` }}>
+                <div className="card-header">
+                  <div className="rank-badge">#{rec.rank}</div>
+                  <h3>{rec.restaurant.name}</h3>
+                  <div className="meta-tags">
+                    <span className="tag rating">★ {rec.restaurant.rating}</span>
+                    <span className="tag price">₹{rec.restaurant.cost_for_two}</span>
                   </div>
-                  <div className="card-body">
-                    <p className="explanation">{rec.explanation}</p>
-                  </div>
+                  <p className="cuisines">{rec.restaurant.cuisines}</p>
                 </div>
-              ))}
-            </div>
-          )}
+                <div className="card-body">
+                  <p className="explanation">"{rec.explanation}"</p>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
     </div>
