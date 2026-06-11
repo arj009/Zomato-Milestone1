@@ -78,7 +78,7 @@ function App() {
 
       <div className="hero">
         <div className="hero-content">
-          <h1>Zomato AI Guide</h1>
+          <h1>Zomato AI Restaurant Recommendation</h1>
           <p>Discover your next great meal with intelligent, vibe-based recommendations.</p>
         </div>
       </div>
@@ -146,6 +146,7 @@ function App() {
 
       {results && !loading && (
         <div className="results-container slide-up">
+          <h2 className="results-header">Your Recommendations</h2>
           {results.summary && <div className="glass-panel results-summary">{results.summary}</div>}
           
           <div className="cards-grid">

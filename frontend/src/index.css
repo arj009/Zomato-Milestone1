@@ -66,6 +66,13 @@ body {
 .hero {
   text-align: center;
   margin-bottom: 4rem;
+  padding: 4rem 2rem;
+  border-radius: var(--radius);
+  background-image: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('/images/hero.png');
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+  border: 1px solid var(--glass-border);
   animation: fadeInDown 1s var(--easing);
 }
 .hero h1 {
@@ -240,6 +247,15 @@ select option { background: var(--bg-base); }
   line-height: 1.7;
   color: #ddd;
   font-style: italic;
+}
+
+.results-header {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent-yellow);
+  text-align: center;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 10px rgba(255, 184, 0, 0.3);
 }
 
 /* Summary Banner */
