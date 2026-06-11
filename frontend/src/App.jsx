@@ -123,7 +123,7 @@ function App() {
         </div>
 
         <button type="submit" className="glow-btn" disabled={loading}>
-          {loading ? <span className="spinner"></span> : 'Find Restaurants'}
+          {loading ? <span className="spinner"></span> : 'Get AI recommendation'}
         </button>
       </form>
 
