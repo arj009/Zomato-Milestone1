@@ -86,7 +86,7 @@ function App() {
       <form className="glass-panel search-container" onSubmit={handleSubmit}>
         <div className="form-grid">
           <div className="input-group">
-            <label>Location <span className="required">*</span></label>
+            <label>Where are you looking? <span className="required">*</span></label>
             <select name="location" value={formData.location} onChange={handleChange} required>
               <option value="" disabled>Select a neighborhood...</option>
               {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
@@ -94,7 +94,7 @@ function App() {
           </div>
 
           <div className="input-group">
-            <label>Cuisine</label>
+            <label>Craving anything specific?</label>
             <select name="cuisine" value={formData.cuisine} onChange={handleChange}>
               <option value="">Any Cuisine</option>
               {cuisinesList.map(c => <option key={c} value={c}>{c}</option>)}
@@ -102,7 +102,7 @@ function App() {
           </div>
 
           <div className="input-group">
-            <label>Max Budget (for two)</label>
+            <label>Max Budget (For two)</label>
             <input type="number" name="budget" value={formData.budget} onChange={handleChange} placeholder="₹1500" min="0" step="100" />
           </div>
 
@@ -118,7 +118,7 @@ function App() {
         </div>
 
         <div className="input-group full-width">
-          <label>Describe your perfect meal (Vibe, mood or specific cravings, date etc.)</label>
+          <label>Describe your perfect meal (Vibe, Mood, Specific Cravings or Date Night etc.)</label>
           <textarea name="extra" value={formData.extra} onChange={handleChange} placeholder="e.g. A quiet rooftop for a date, or live music and great momos..." rows="2" />
         </div>
 

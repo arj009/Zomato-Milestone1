@@ -120,11 +120,10 @@ body {
 .input-group.full-width { grid-column: 1 / -1; margin-top: 1rem; }
 
 label {
-  font-size: 0.9rem;
+  font-size: 0.95rem;
   font-weight: 500;
   color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 .required { color: var(--primary-red); }
 
