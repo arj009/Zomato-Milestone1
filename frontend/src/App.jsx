@@ -78,7 +78,7 @@ function App() {
 
       <div className="hero">
         <div className="hero-content">
-          <h1>Zomato AI Restaurant Recommendation</h1>
+          <h1>AI Restaurant Recommendation</h1>
           <p>Discover your next great meal with intelligent, vibe-based recommendations.</p>
         </div>
       </div>
