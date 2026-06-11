@@ -78,8 +78,8 @@ function App() {
 
       <div className="hero">
         <div className="hero-content">
-          <h1>AI Restaurant Recommendation</h1>
-          <p>Discover your next great meal with intelligent, vibe-based recommendations.</p>
+          <h1>AI Restaurant<br />Recommendation</h1>
+          <p>Discover your next great meal with intelligent recommendations.</p>
         </div>
       </div>
 
@@ -118,7 +118,7 @@ function App() {
         </div>
 
         <div className="input-group full-width">
-          <label>The Vibe</label>
+          <label>Describe your perfect meal (Vibe, mood or specific cravings, date etc.)</label>
           <textarea name="extra" value={formData.extra} onChange={handleChange} placeholder="e.g. A quiet rooftop for a date, or live music and great momos..." rows="2" />
         </div>
 
