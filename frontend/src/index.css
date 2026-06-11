@@ -88,14 +88,11 @@ body {
 }
 .hero p {
   font-size: 1.25rem;
-  font-weight: 600;
+  color: #ffffff;
+  font-weight: 500;
   max-width: 600px;
   margin: 0 auto;
-  background: linear-gradient(135deg, #fff, #ffb800, #ff3344, #fff);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: shine 6s linear infinite;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 /* Forms */
