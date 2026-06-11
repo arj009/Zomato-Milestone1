@@ -127,6 +127,27 @@ label {
 }
 .required { color: var(--primary-red); }
 
+.form-grid.four-cols {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.input-with-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  color: #64748b;
+  z-index: 2;
+}
+
+.rating-star {
+  color: var(--accent-yellow);
+}
+
 input, select, textarea {
   width: 100%;
   background: rgba(0, 0, 0, 0.4);
@@ -138,12 +159,42 @@ input, select, textarea {
   transition: all 0.3s ease;
   outline: none;
 }
+
+.input-with-icon select,
+.input-with-icon input {
+  padding: 0.8rem 1rem 0.8rem 2.8rem;
+  background-color: #ffffff;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+}
+
+.input-with-icon select {
+  appearance: none;
+  cursor: pointer;
+}
+
+.input-with-icon:has(select)::after {
+  content: '▼';
+  font-size: 0.6rem;
+  color: #64748b;
+  position: absolute;
+  right: 1rem;
+  pointer-events: none;
+}
+
 input:focus, select:focus, textarea:focus {
   border-color: var(--primary-red);
   box-shadow: 0 0 0 3px rgba(255, 51, 68, 0.15);
-  background: rgba(0, 0, 0, 0.6);
 }
-select option { background: var(--bg-base); }
+
+.input-with-icon select:focus,
+.input-with-icon input:focus {
+  background-color: #ffffff;
+}
+
+select option { background: var(--bg-base); color: white; }
+.input-with-icon select option { background: #ffffff; color: #1e293b; }
 
 /* Glow Button */
 .glow-btn {

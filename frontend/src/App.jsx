@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { MapPin, Banknote, Star, Wand2, UtensilsCrossed } from 'lucide-react';
 import './index.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8001';
@@ -84,46 +85,53 @@ function App() {
       </div>
 
       <form className="glass-panel search-container" onSubmit={handleSubmit}>
-        <div className="form-grid">
+        <div className="form-grid four-cols">
           <div className="input-group">
             <label>Where are you looking? <span className="required">*</span></label>
-            <select name="location" value={formData.location} onChange={handleChange} required>
-              <option value="" disabled>Select a neighborhood...</option>
-              {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-            </select>
+            <div className="input-with-icon">
+              <MapPin className="input-icon" size={18} />
+              <select name="location" value={formData.location} onChange={handleChange} required>
+                <option value="" disabled>Select a neighborhood...</option>
+                {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+              </select>
+            </div>
           </div>
 
           <div className="input-group">
             <label>Craving anything specific?</label>
-            <select name="cuisine" value={formData.cuisine} onChange={handleChange}>
-              <option value="">Any Cuisine</option>
-              {cuisinesList.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
+            <div className="input-with-icon">
+              <UtensilsCrossed className="input-icon" size={18} />
+              <select name="cuisine" value={formData.cuisine} onChange={handleChange}>
+                <option value="">Any Cuisine</option>
+                {cuisinesList.map(c => <option key={c} value={c}>{c}</option>)}
+              </select>
+            </div>
           </div>
 
           <div className="input-group">
             <label>Max Budget (For two)</label>
-            <input type="number" name="budget" value={formData.budget} onChange={handleChange} placeholder="₹1500" min="0" step="100" />
+            <div className="input-with-icon">
+              <Banknote className="input-icon" size={18} />
+              <input type="number" name="budget" value={formData.budget} onChange={handleChange} placeholder="Any Budget" min="0" step="100" />
+            </div>
           </div>
 
           <div className="input-group">
             <label>Minimum Rating</label>
-            <select name="min_rating" value={formData.min_rating} onChange={handleChange}>
-              <option value="0">Any</option>
-              <option value="3.5">3.5 & Up</option>
-              <option value="4.0">4.0 & Up</option>
-              <option value="4.5">4.5 & Up</option>
-            </select>
+            <div className="input-with-icon">
+              <Star className="input-icon rating-star" size={18} />
+              <select name="min_rating" value={formData.min_rating} onChange={handleChange}>
+                <option value="0">Any</option>
+                <option value="3.5">3.5 & Up</option>
+                <option value="4.0">4.0 & Up</option>
+                <option value="4.5">4.5 & Up</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div className="input-group full-width">
-          <label>Describe your perfect meal (Vibe, Mood, Specific Cravings or Date Night etc.)</label>
-          <textarea name="extra" value={formData.extra} onChange={handleChange} placeholder="e.g. A quiet rooftop for a date, or live music and great momos..." rows="2" />
-        </div>
-
         <button type="submit" className="glow-btn" disabled={loading}>
-          {loading ? <span className="spinner"></span> : 'Get AI Recommendation'}
+          {loading ? <span className="spinner"></span> : <><Wand2 size={20} /> Get AI Recommendations</>}
         </button>
       </form>
 
