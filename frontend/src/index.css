@@ -79,7 +79,7 @@ body {
   font-size: 4rem;
   font-weight: 800;
   letter-spacing: -1px;
-  background: linear-gradient(135deg, #fff, #ffb800, #ff3344);
+  background: linear-gradient(135deg, #00f2fe, #4facfe, #9b51e0, #00f2fe);
   background-size: 200% auto;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -88,11 +88,14 @@ body {
 }
 .hero p {
   font-size: 1.25rem;
-  color: #ffffff;
-  font-weight: 500;
+  font-weight: 600;
   max-width: 600px;
   margin: 0 auto;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  background: linear-gradient(135deg, #00f2fe, #4facfe, #9b51e0, #00f2fe);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 6s linear infinite;
 }
 
 /* Forms */
