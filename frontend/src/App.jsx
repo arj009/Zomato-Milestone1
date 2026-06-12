@@ -112,7 +112,7 @@ function App() {
             <label>Max Budget (For two)</label>
             <div className="input-with-icon">
               <Banknote className="input-icon" size={18} />
-              <input type="number" name="budget" value={formData.budget} onChange={handleChange} placeholder="Any Budget" min="0" step="100" />
+              <input type="number" name="budget" value={formData.budget} onChange={handleChange} placeholder="No limit" min="0" step="100" />
             </div>
           </div>
 
@@ -128,6 +128,11 @@ function App() {
               </select>
             </div>
           </div>
+        </div>
+
+        <div className="input-group full-width">
+          <label>Describe your perfect meal (vibe, mood, specific cravings or date night)</label>
+          <textarea name="extra" value={formData.extra} onChange={handleChange} placeholder="e.g., cozy rooftop dinner, spicy Thai curry, live music, vegan options..." rows="2" />
         </div>
 
         <button type="submit" className="glow-btn" disabled={loading}>

@@ -140,7 +140,7 @@ label {
 .input-icon {
   position: absolute;
   left: 1rem;
-  color: #64748b;
+  color: #999999;
   z-index: 2;
 }
 
@@ -163,9 +163,9 @@ input, select, textarea {
 .input-with-icon select,
 .input-with-icon input {
   padding: 0.8rem 1rem 0.8rem 2.8rem;
-  background-color: #ffffff;
-  color: #1e293b;
-  border: 1px solid #e2e8f0;
+  background-color: rgba(0, 0, 0, 0.4);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 8px;
 }
 
@@ -177,7 +177,7 @@ input, select, textarea {
 .input-with-icon:has(select)::after {
   content: '▼';
   font-size: 0.6rem;
-  color: #64748b;
+  color: #999999;
   position: absolute;
   right: 1rem;
   pointer-events: none;
@@ -190,11 +190,20 @@ input:focus, select:focus, textarea:focus {
 
 .input-with-icon select:focus,
 .input-with-icon input:focus {
-  background-color: #ffffff;
+  background-color: rgba(0, 0, 0, 0.6);
 }
 
 select option { background: var(--bg-base); color: white; }
-.input-with-icon select option { background: #ffffff; color: #1e293b; }
+.input-with-icon select option { background: #1a1a1a; color: #ffffff; }
+
+.input-with-icon input::placeholder,
+.input-with-icon select::placeholder {
+  color: #ffffff;
+}
+
+textarea::placeholder {
+  color: #ffffff;
+}
 
 /* Glow Button */
 .glow-btn {
