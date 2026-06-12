@@ -202,7 +202,7 @@ select option { background: var(--bg-base); color: white; }
 }
 
 textarea::placeholder {
-  color: #ffffff;
+  color: #999999;
 }
 
 /* Glow Button */
