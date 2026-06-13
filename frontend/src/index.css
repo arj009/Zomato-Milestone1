@@ -372,3 +372,71 @@ textarea::placeholder {
 @keyframes spin {
   to { transform: rotate(360deg); }
 }
+
+/* Responsive Design / Mobile Fixes */
+@media screen and (max-width: 900px) {
+  .form-grid.four-cols {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .app-container {
+    padding: 1.5rem 1rem;
+  }
+  
+  .hero {
+    padding: 2rem 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+  
+  .hero p {
+    font-size: 1rem;
+  }
+  
+  .search-container {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  
+  .form-grid.four-cols {
+    grid-template-columns: 1fr;
+  }
+  
+  .cards-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .card-header {
+    padding: 1.5rem;
+  }
+  
+  .card-header h3 {
+    font-size: 1.3rem;
+    padding-right: 3rem;
+  }
+  
+  .rank-badge {
+    top: 1rem; right: 1rem;
+    width: 32px; height: 32px;
+    font-size: 1rem;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .results-header {
+    font-size: 1.6rem;
+  }
+  
+  .glow-btn {
+    font-size: 1rem;
+    padding: 1rem;
+  }
+}
